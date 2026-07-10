@@ -3,8 +3,8 @@ local _, PIS = ...
 local Search = {}
 PIS.Search = Search
 
--- The item database ships as a few large string chunks of
--- "iconFileID:Item Name<TAB>search tags" lines (see src\Data\ItemIcons.lua).
+-- The item database ships with PeaversIconSearchData as a few large string
+-- chunks of "iconFileID:Item Name<TAB>search tags" lines, refreshed daily.
 -- Searching the raw string keeps load time and memory far below what 80k+
 -- table entries would cost.
 local blob, blobLower
@@ -14,8 +14,8 @@ local function EnsureLoaded()
 		return
 	end
 
-	blob = table.concat(PIS.ItemIconData, "\n")
-	PIS.ItemIconData = nil
+	local data = _G.PeaversIconSearchData
+	blob = table.concat(data.API.TakeItemIconData(), "\n")
 
 	-- string.lower only folds ASCII bytes, so byte offsets in blobLower always
 	-- line up with blob, including for multi-byte UTF-8 names.

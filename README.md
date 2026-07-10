@@ -21,6 +21,6 @@ When you create or edit a transmog outfit, Blizzard's icon picker offers thousan
 3. Type an item name — e.g. `Thunderfury` — and/or tick item types; partial words work (`thunderf`), and you can mix name and slot words (`field marshal cloth shoulder`)
 4. The icon grid filters to matching items' icons; click one and save
 
-## Regenerating the item database
+## The item database
 
-`src/Data/ItemIcons.lua` is generated from Blizzard's client database (via [wago.tools](https://wago.tools) db2 exports) by joining `ItemSearchName`, `Item`, `ItemModifiedAppearance`, and `ItemAppearance`. Regenerate it for a new game build with the `gen_itemicons.py` script (see file header).
+The item database ships with the [PeaversIconSearchData](https://github.com/peavers-warcraft/PeaversIconSearchData) dependency. It is generated from Blizzard's client database (via [wago.tools](https://wago.tools) db2 exports) by joining `ItemSearchName`, `Item`, `ItemModifiedAppearance`, and `ItemAppearance`, and refreshed daily against the latest retail build by the `iconsearch-module` Lambda in PeaversAddonDataSupplier.

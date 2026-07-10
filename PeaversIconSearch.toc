@@ -12,11 +12,10 @@
 ## X-Source-Code: https://github.com/peavers-warcraft/PeaversIconSearch
 ## X-Curse-Project-ID: 1604401
 
-## Dependencies: PeaversCommons
+## Dependencies: PeaversIconSearchData, PeaversCommons
 
 Changelog.lua
 
-src\Data\ItemIcons.lua
 src\Core\ItemSearch.lua
 
 src\Main.lua

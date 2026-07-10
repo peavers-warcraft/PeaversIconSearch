@@ -11,8 +11,8 @@ local MIN_QUERY_LENGTH = 2
 local MAX_RESULTS = 1000
 local SEARCH_DELAY = 0.15
 
--- Dropdown entries: label -> exact tag word in the item database (see
--- tools\gen_itemicons.py for the tag vocabulary)
+-- Dropdown entries: label -> exact tag word in the item database (the tag
+-- vocabulary is defined by the iconsearch-module in PeaversAddonDataSupplier)
 local TYPE_GROUPS = {
 	{
 		text = "Armor",
