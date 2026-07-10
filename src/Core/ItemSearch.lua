@@ -22,36 +22,35 @@ local function EnsureLoaded()
 	blobLower = blob:lower()
 end
 
--- Returns an array of { icon = fileID, name = itemName } for items matching
--- every whitespace-separated word of the query (case-insensitive, any order),
--- against the item name plus its slot/type tags ("cloth shoulder", "sword").
--- One entry per distinct icon, in alphabetical order.
-function Search:Find(query, maxResults)
-	EnsureLoaded()
-
-	local tokens = {}
-	for token in query:lower():gmatch("%S+") do
-		tokens[#tokens + 1] = token
-	end
-	if #tokens == 0 then
-		return {}
-	end
-
-	-- Scan the blob for the longest token (fewest candidate lines), then
-	-- check the remaining tokens per line.
-	local primary = tokens[1]
+-- Every query token must appear in the name+tags; at least one type tag (if
+-- any are given) must hit a whole word in the tag section.
+local function LineMatches(haystack, tokens, typeTags)
 	for _, token in ipairs(tokens) do
-		if #token > #primary then
-			primary = token
+		if not haystack:find(token, 1, true) then
+			return false
 		end
 	end
 
-	local results = {}
-	local seen = {}
+	if typeTags then
+		local tagStart = haystack:find("\t", 1, true)
+		local tags = " " .. (tagStart and haystack:sub(tagStart + 1) or "") .. " "
+		for _, tag in ipairs(typeTags) do
+			if tags:find(" " .. tag .. " ", 1, true) then
+				return true
+			end
+		end
+		return false
+	end
+
+	return true
+end
+
+-- Scan the blob for one needle, appending matching lines' icons to results
+local function Scan(needle, tokens, typeTags, results, seen, maxResults)
 	local init = 1
 
 	while #results < maxResults do
-		local matchStart = blobLower:find(primary, init, true)
+		local matchStart = blobLower:find(needle, init, true)
 		if not matchStart then
 			break
 		end
@@ -64,29 +63,64 @@ function Search:Find(query, maxResults)
 
 		local lineLower = blobLower:sub(lineStart, lineEnd - 1)
 		local sep = lineLower:find(":", 1, true)
-		if sep then
-			-- Match against name + tags, never the icon fileID digits
-			local haystack = lineLower:sub(sep + 1)
-			local allMatch = true
-			for _, token in ipairs(tokens) do
-				if not haystack:find(token, 1, true) then
-					allMatch = false
-					break
-				end
-			end
-
-			if allMatch then
-				local line = blob:sub(lineStart, lineEnd - 1)
-				local icon, name = line:match("^(%d+):([^\t]*)")
-				icon = icon and tonumber(icon)
-				if icon and not seen[icon] then
-					seen[icon] = true
-					results[#results + 1] = { icon = icon, name = name }
-				end
+		-- Match against name + tags, never the icon fileID digits
+		if sep and LineMatches(lineLower:sub(sep + 1), tokens, typeTags) then
+			local line = blob:sub(lineStart, lineEnd - 1)
+			local icon, name = line:match("^(%d+):([^\t]*)")
+			icon = icon and tonumber(icon)
+			if icon and not seen[icon] then
+				seen[icon] = true
+				results[#results + 1] = { icon = icon, name = name }
 			end
 		end
 
 		init = lineEnd + 1
+	end
+end
+
+-- Returns an array of { icon = fileID, name = itemName } for items matching
+-- every whitespace-separated word of the query (case-insensitive, any order),
+-- against the item name plus its slot/type tags ("cloth shoulder", "sword").
+-- typeTags is an optional array of exact tag words (e.g. {"shoulder","dagger"});
+-- an item matches if it carries ANY of them. One entry per distinct icon, in
+-- alphabetical order.
+function Search:Find(query, typeTags, maxResults)
+	EnsureLoaded()
+
+	local tokens = {}
+	for token in query:lower():gmatch("%S+") do
+		tokens[#tokens + 1] = token
+	end
+
+	if typeTags and #typeTags == 0 then
+		typeTags = nil
+	end
+	if #tokens == 0 and not typeTags then
+		return {}
+	end
+
+	local results = {}
+	local seen = {}
+
+	if #tokens > 0 then
+		-- One scan for the longest token (fewest candidate lines); results
+		-- come out in data order, which is alphabetical.
+		local primary = tokens[1]
+		for _, token in ipairs(tokens) do
+			if #token > #primary then
+				primary = token
+			end
+		end
+		Scan(primary, tokens, typeTags, results, seen, maxResults)
+	else
+		-- Type filter only: one scan per selected tag, then restore
+		-- alphabetical order across the merged results.
+		for _, tag in ipairs(typeTags) do
+			Scan(tag, tokens, typeTags, results, seen, maxResults)
+		end
+		table.sort(results, function(a, b)
+			return a.name:lower() < b.name:lower()
+		end)
 	end
 
 	return results

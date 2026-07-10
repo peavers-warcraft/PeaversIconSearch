@@ -6,7 +6,8 @@ When you create or edit a transmog outfit, Blizzard's icon picker offers thousan
 
 ## Features
 
-- Search box in the outfit create/edit popup at the transmogrifier
+- A single magnifier button in the outfit create/edit popup opens the search menu; the icon turns gold while a filter is active
+- The menu holds a search box plus multi-select item type checkboxes (Armor slots and Weapon types — e.g. Shoulders + Dagger) that combine with the search text
 - Searches 80,000+ item names, including gear whose icon comes from its appearance
 - Multi-word search: every word must match, in any order (`replica marshal silk`)
 - Slot and type keywords work alongside names: `cloth shoulder`, `plate helm`, `leather belt`, `sword 2h`, `dagger`, `cloak`
@@ -16,8 +17,9 @@ When you create or edit a transmog outfit, Blizzard's icon picker offers thousan
 ## Usage
 
 1. Visit a transmogrifier and create (or right-click to edit) an outfit
-2. Type an item name — e.g. `Thunderfury` — into the search box; partial words work (`thunderf`), and you can mix name and slot words (`field marshal cloth shoulder`)
-3. The icon grid filters to matching items' icons; click one and save
+2. Click the magnifier button next to the icon dropdown
+3. Type an item name — e.g. `Thunderfury` — and/or tick item types; partial words work (`thunderf`), and you can mix name and slot words (`field marshal cloth shoulder`)
+4. The icon grid filters to matching items' icons; click one and save
 
 ## Regenerating the item database
 
