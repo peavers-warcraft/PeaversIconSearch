@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: PeaversIconSearch
+  description: "A World of Warcraft addon that adds an item search box to the transmog outfit icon picker."
+  annotations:
+    github.com/project-slug: peavers-warcraft/PeaversIconSearch
+spec:
+  type: library
+  lifecycle: production
+  owner: peavers-warcraft
