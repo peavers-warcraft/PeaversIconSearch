@@ -24,6 +24,7 @@ A World of Warcraft addon that adds an item search box to the transmog outfit ic
 5. Clear the search to restore the full default icon grid
 <!-- /peavers:usage -->
 
+
 ## Installation
 
 ### Recommended: PeaversUpdater
