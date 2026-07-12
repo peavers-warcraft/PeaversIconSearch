@@ -3,6 +3,7 @@ package-as: PeaversIconSearch
 required-dependencies:
   - peaverscommons
   - peaversiconsearchdata
+  - peaversconfig
 
 ignore:
   - .git
