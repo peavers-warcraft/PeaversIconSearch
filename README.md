@@ -1,6 +1,6 @@
 # PeaversIconSearch
 
-[![AddonSentry](https://api.addonsentry.io/api/public/repos/peavers-warcraft/PeaversIconSearch/badge.svg)](https://addonsentry.io/dashboard/peavers-warcraft/PeaversIconSearch)
+[![AddonSentry](https://addonsentry.io/api/public/repos/peavers-warcraft/PeaversIconSearch/badge.svg)](https://addonsentry.io/dashboard/peavers-warcraft/PeaversIconSearch)
 
 A World of Warcraft addon that adds an item search box to the transmog outfit icon picker.
 
