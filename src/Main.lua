@@ -264,6 +264,18 @@ PeaversCommons.Events:Init(addonName, function()
 	-- PeaversCommons.Events for this: Events:Init used to wipe every
 	-- ADDON_LOADED handler once this addon initialized.
 	EventUtil.ContinueOnAddOnLoaded("Blizzard_Transmog", TryHook)
+
+	-- Register with PeaversConfig registry
+	if PeaversCommons.ConfigRegistry then
+		PeaversCommons.ConfigRegistry:Register({
+			name = "PeaversIconSearch",
+			displayName = "Icon Search",
+			description = "Item search for the transmog outfit icon picker",
+			addonRef = PIS,
+			pages = PIS.ConfigUI:GetPages(),
+			order = 13,
+		})
+	end
 end, {
 	suppressAnnouncement = true
 })

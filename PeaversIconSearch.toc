@@ -17,5 +17,6 @@
 Changelog.lua
 
 src\Core\ItemSearch.lua
+src\Utils\ConfigUI.lua
 
 src\Main.lua
